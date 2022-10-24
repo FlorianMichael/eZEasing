@@ -39,20 +39,20 @@ public enum EzEasing {
     IN_OUT_CIRC("In out circ", x -> (float) (x < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2)),
 
     IN_BACK("In back", x -> {
-        final float c1 = 1.70158f;
+        final float c1 = 1.70158F;
         final float c3 = c1 + 1;
 
         return c3 * x * x * x - c1 * x * x;
     }),
     OUT_BACK("Out back", x -> {
-        final float c1 = 1.70158f;
+        final float c1 = 1.70158F;
         final float c3 = c1 + 1;
 
         return 1 + c3 * (float) Math.pow(x - 1, 3) + c1 * (float) Math.pow(x - 1, 2);
     }),
     IN_OUT_BACK("In out back", x -> {
-        final float c1 = 1.70158f;
-        final float c2 = c1 * 1.525f;
+        final float c1 = 1.70158F;
+        final float c2 = c1 * 1.525F;
 
         return x < 0.5 ? ((float) Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : ((float) Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
     }),
