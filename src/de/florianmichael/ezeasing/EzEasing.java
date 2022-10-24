@@ -1,6 +1,9 @@
 package de.florianmichael.ezeasing;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 // https://easings.net/
 public enum EzEasing {
@@ -96,14 +99,28 @@ public enum EzEasing {
         this.function = function;
     }
 
+    public static List<String> functionNames() {
+        return Arrays.stream(values()).map(v -> v.name).collect(Collectors.toList());
+    }
+
+    public static float ease(final String functionName, final float x) {
+        return byName(functionName).ease(x);
+    }
+
+    public static EzEasing byName(final String functionName) {
+        for (EzEasing value : values()) {
+            if (value.name.equals(functionName)) {
+                return value;
+            }
+        }
+        return NONE;
+    }
+
     public String upperName() {
         return this.name.toUpperCase(Locale.ROOT);
     }
 
     public float ease(final float x) {
-        if (this.function == null) {
-            return 0F;
-        }
         return this.function.f(x);
     }
 }
