@@ -1,0 +1,109 @@
+package de.florianmichael.ezeasing;
+
+import java.util.Locale;
+
+// https://easings.net/
+public enum EzEasing {
+
+    NONE("None", x -> x),
+
+    IN_SINE("In sine", x -> (float) (1 - Math.cos(x * Math.PI) / 2F)),
+    OUT_SINE("Out sine", x -> (float) (1 - Math.sin(x * Math.PI) / 2F)),
+    IN_OUT_SINE("In out sine", x -> (float) (-(Math.cos(Math.PI * x) - 1) / 2F)),
+
+    IN_QUAD("In quad", x -> x * x),
+    OUT_QUAD("Out quad", x -> 1 - (1 - x) * (1 - x)),
+    IN_OUT_QUAD("In out quad", x -> x < 0.5 ? 2 * x * x : 1 - (float) Math.pow(-2 * x + 2, 2) / 2F),
+
+    IN_CUBIC("In cubic", x -> (float) Math.pow(x, 3)),
+    OUT_CUBIC("Out cubic", x -> (float) (1 - Math.pow(1 - x, 3))),
+    IN_OUT_CUBIC("In out cubic", x -> x < 0.5 ? 4 * x * x * x : 1 - (float) Math.pow(-2 * x + 2, 3) / 2F),
+
+    IN_QUART("In quart", x -> (float) Math.pow(x, 4)),
+    OUT_QUART("Out quart", x -> (float) (1 - Math.pow(1 - x, 4))),
+    IN_OUT_QUART("In out quart", x -> x < 0.5 ? 8 * x * x * x * x : 1 - (float) Math.pow(-2 * x + 2, 4) / 2),
+
+    IN_QUINT("In quint", x -> (float) Math.pow(x, 5)),
+    OUT_QUINT("Out quint", x -> (float) (1 - Math.pow(1 - x, 5))),
+    IN_OUT_QUINT("In out quint", x -> x < 0.5 ? 16 * x * x * x * x * x : 1 - (float) Math.pow(-2 * x + 2, 5) / 2F),
+
+    IN_EXPO("In expo", x -> x == 0 ? 0 : (float) Math.pow(2, 10 * x - 10)),
+    OUT_EXPO("Out expo", x -> x == 1 ? 1 : (float) (1 - Math.pow(2, -10 * x))),
+    IN_OUT_EXPO("In out expo", x -> x == 0 ? 0 : (float) (x == 1 ? 1 : x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : (2 - Math.pow(2, -20 * x + 10)) / 2)),
+
+    IN_CIRC("In circ", x -> (float) (1 - Math.sqrt(1 - Math.pow(x, 2)))),
+    OUT_CIRC("Out circ", x -> (float) Math.sqrt(1 - Math.pow(x - 1, 2))),
+    IN_OUT_CIRC("In out circ", x -> (float) (x < 0.5 ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2)),
+
+    IN_BACK("In back", x -> {
+        final float c1 = 1.70158f;
+        final float c3 = c1 + 1;
+
+        return c3 * x * x * x - c1 * x * x;
+    }),
+    OUT_BACK("Out back", x -> {
+        final float c1 = 1.70158f;
+        final float c3 = c1 + 1;
+
+        return 1 + c3 * (float) Math.pow(x - 1, 3) + c1 * (float) Math.pow(x - 1, 2);
+    }),
+    IN_OUT_BACK("In out back", x -> {
+        final float c1 = 1.70158f;
+        final float c2 = c1 * 1.525f;
+
+        return x < 0.5 ? ((float) Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 : ((float) Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2;
+    }),
+
+    IN_ELASTIC("In elastic", x -> {
+        final double c4 = (2 * Math.PI) / 3;
+
+        return x == 0 ? 0 : (float) (x == 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4));
+    }),
+    OUT_ELASTIC("Out elastic", x -> {
+        final double c4 = (2 * Math.PI) / 3;
+
+        return x == 0 ? 0 : (float) (x == 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1);
+    }),
+    INT_OUT_ELASTIC("In out elastic", x -> {
+        final double c5 = (2 * Math.PI) / 4.5;
+        final double sin = Math.sin((20 * x - 11.125) * c5);
+
+        return x == 0 ? 0 : (float) (x == 1 ? 1 : x < 0.5 ? -(Math.pow(2, 20 * x - 10) * sin) / 2 : (Math.pow(2, -20 * x + 10) * sin) / 2 + 1);
+    }),
+
+    OUT_BOUNCE("Out bounce", x -> {
+        final double n1 = 7.5625;
+        final double d1 = 2.75;
+
+        if (x < 1 / d1) {
+            return (float) (n1 * x * x);
+        } else if (x < 2 / d1) {
+            return (float) (n1 * (x -= 1.5 / d1) * x + 0.75);
+        } else if (x < 2.5 / d1) {
+            return (float) (n1 * (x -= 2.25 / d1) * x + 0.9375);
+        } else {
+            return (float) (n1 * (x -= 2.625 / d1) * x + 0.984375);
+        }
+    }),
+    IN_BOUNCE("In bounce", x -> 1 - EzEasing.OUT_BOUNCE.ease(1 - x)),
+    IN_OUT_BOUNCE("In out bounce", x -> x < 0.5 ? (1 - EzEasing.OUT_BOUNCE.ease(1 - 2 * x)) / 2 : (1 + EzEasing.OUT_BOUNCE.ease(2 * x - 1)) / 2);
+
+    public final String name;
+    public final Function function;
+
+    EzEasing(final String name, final Function function) {
+        this.name = name;
+        this.function = function;
+    }
+
+    public String upperName() {
+        return this.name.toUpperCase(Locale.ROOT);
+    }
+
+    public float ease(final float x) {
+        if (this.function == null) {
+            return 0F;
+        }
+        return this.function.f(x);
+    }
+}
