@@ -3,12 +3,13 @@ package de.florianmichael.ezeasing;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 // https://easings.net/
 public enum EzEasing {
 
-    NONE("None", x -> x),
+    LINEAR("Linear", x -> x),
 
     IN_SINE("In sine", x -> (float) (1 - Math.cos(x * Math.PI) / 2F)),
     OUT_SINE("Out sine", x -> (float) (1 - Math.sin(x * Math.PI) / 2F)),
@@ -58,12 +59,12 @@ public enum EzEasing {
     }),
 
     IN_ELASTIC("In elastic", x -> {
-        final double c4 = (2 * Math.PI) / 3;
+        final float c4 = (2f * (float) Math.PI) / 3f;
 
         return x == 0 ? 0 : (float) (x == 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4));
     }),
     OUT_ELASTIC("Out elastic", x -> {
-        final double c4 = (2 * Math.PI) / 3;
+        final float c4 = (2f * (float) Math.PI) / 3f;
 
         return x == 0 ? 0 : (float) (x == 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1);
     }),
@@ -75,26 +76,26 @@ public enum EzEasing {
     }),
 
     OUT_BOUNCE("Out bounce", x -> {
-        final double n1 = 7.5625;
-        final double d1 = 2.75;
+        final float n1 = 7.5625f;
+        final float d1 = 2.75f;
 
         if (x < 1 / d1) {
-            return (float) (n1 * x * x);
+            return n1 * x * x;
         } else if (x < 2 / d1) {
-            return (float) (n1 * (x -= 1.5 / d1) * x + 0.75);
+            return n1 * (x -= 1.5f / d1) * x + 0.75f;
         } else if (x < 2.5 / d1) {
-            return (float) (n1 * (x -= 2.25 / d1) * x + 0.9375);
+            return n1 * (x -= 2.25f / d1) * x + 0.9375f;
         } else {
-            return (float) (n1 * (x -= 2.625 / d1) * x + 0.984375);
+            return n1 * (x -= 2.625f / d1) * x + 0.984375f;
         }
     }),
     IN_BOUNCE("In bounce", x -> 1 - EzEasing.OUT_BOUNCE.ease(1 - x)),
     IN_OUT_BOUNCE("In out bounce", x -> x < 0.5 ? (1 - EzEasing.OUT_BOUNCE.ease(1 - 2 * x)) / 2 : (1 + EzEasing.OUT_BOUNCE.ease(2 * x - 1)) / 2);
 
     public final String name;
-    public final Function function;
+    public final Function<Float, Float> function;
 
-    EzEasing(final String name, final Function function) {
+    EzEasing(final String name, final Function<Float, Float> function) {
         this.name = name;
         this.function = function;
     }
@@ -113,7 +114,7 @@ public enum EzEasing {
                 return value;
             }
         }
-        return NONE;
+        return null;
     }
 
     public String upperName() {
@@ -121,6 +122,6 @@ public enum EzEasing {
     }
 
     public float ease(final float x) {
-        return this.function.f(x);
+        return this.function.apply(x);
     }
 }
