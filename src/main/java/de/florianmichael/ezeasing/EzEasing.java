@@ -59,12 +59,12 @@ public enum EzEasing {
     }),
 
     IN_ELASTIC("In elastic", x -> {
-        final float c4 = (2f * (float) Math.PI) / 3f;
+        final float c4 = (2f * (float) Math.PI) / 3F;
 
         return x == 0 ? 0 : (float) (x == 1 ? 1 : -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4));
     }),
     OUT_ELASTIC("Out elastic", x -> {
-        final float c4 = (2f * (float) Math.PI) / 3f;
+        final float c4 = (2f * (float) Math.PI) / 3F;
 
         return x == 0 ? 0 : (float) (x == 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1);
     }),
@@ -76,17 +76,17 @@ public enum EzEasing {
     }),
 
     OUT_BOUNCE("Out bounce", x -> {
-        final float n1 = 7.5625f;
-        final float d1 = 2.75f;
+        final float n1 = 7.5625F;
+        final float d1 = 2.75F;
 
         if (x < 1 / d1) {
             return n1 * x * x;
         } else if (x < 2 / d1) {
-            return n1 * (x -= 1.5f / d1) * x + 0.75f;
+            return n1 * (x -= 1.5F / d1) * x + 0.75F;
         } else if (x < 2.5 / d1) {
-            return n1 * (x -= 2.25f / d1) * x + 0.9375f;
+            return n1 * (x -= 2.25F / d1) * x + 0.9375F;
         } else {
-            return n1 * (x -= 2.625f / d1) * x + 0.984375f;
+            return n1 * (x -= 2.625F / d1) * x + 0.984375F;
         }
     }),
     IN_BOUNCE("In bounce", x -> 1 - EzEasing.OUT_BOUNCE.ease(1 - x)),
