@@ -12,7 +12,7 @@ public enum EzEasing {
     LINEAR("Linear", x -> x),
 
     IN_SINE("In sine", x -> (float) (1F - Math.cos((x * Math.PI) / 2F))),
-    OUT_SINE("Out sine", x -> (float) (1F - Math.sin((x * Math.PI) / 2F))),
+    OUT_SINE("Out sine", x -> (float) (Math.sin((x * Math.PI) / 2F))),
     IN_OUT_SINE("In out sine", x -> (float) (-(Math.cos(Math.PI * x) - 1F) / 2F)),
 
     IN_QUAD("In quad", x -> x * x),
